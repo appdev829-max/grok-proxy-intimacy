@@ -12,11 +12,19 @@ export default async function handler(req, res) {
       })
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Grok API error:", errorText);
+      return res.status(response.status).json({ error: "Grok API error", detail: errorText });
+    }
+
     const data = await response.json();
-    res.status(response.status).json(data);
+    res.status(200).json(data);
   } catch (error) {
-    console.error("Grok proxy error:", error);
+    console.error("Proxy error:", error);
     res.status(500).json({ error: "Failed to connect to Grok API" });
   }
 }
+
+
 
