@@ -1,3 +1,5 @@
+import fetch from "node-fetch";
+
 export default async function handler(req, res) {
   const GROK_API_URL = "https://grok.api.x.ai/api/chat";
   const GROK_API_KEY = process.env.GROK_API_KEY;
@@ -22,4 +24,3 @@ export default async function handler(req, res) {
     res.status(500).json({ error: "Proxy error", details: err.message });
   }
 }
-
