@@ -23,5 +23,6 @@ export default async function handler(req, res) {
     }
   };
 
-  res.status(200).json(mockResponse);
+  return res.status(200).json(mockResponse);
 }
+
