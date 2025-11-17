@@ -1,6 +1,5 @@
 export default async function handler(req, res) {
-  const userMessage =
-    req.body?.messages?.[0]?.content ?? "No message provided";
+  const userMessage = req.body?.messages?.[0]?.content ?? "No message provided";
 
   const mockResponse = {
     id: "chatcmpl-mock123",
@@ -25,7 +24,5 @@ export default async function handler(req, res) {
   };
 
   res.setHeader("Content-Type", "application/json");
-  res.status(200).json(mockResponse);
+  res.status(200).send(JSON.stringify(mockResponse, null, 2));
 }
-
-
