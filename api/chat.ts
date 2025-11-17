@@ -1,6 +1,6 @@
-import fetch from "node-fetch";
-
 export default async function handler(req, res) {
+  const userMessage = req.body?.messages?.[0]?.content || "No message provided";
+
   const mockResponse = {
     id: "chatcmpl-mock123",
     object: "chat.completion",
@@ -11,7 +11,7 @@ export default async function handler(req, res) {
         index: 0,
         message: {
           role: "assistant",
-          content: `Hi Jonas! You said: "${req.body?.messages?.[0]?.content}". Here's a mock Grok reply.`
+          content: `Hi Jonas! You said: "${userMessage}". Here's a mock Grok reply.`
         },
         finish_reason: "stop"
       }
