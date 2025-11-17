@@ -1,0 +1,15 @@
+{
+  "name": "grok-proxy-intimacy",
+  "version": "1.0.0",
+  "description": "Minimal proxy API for Grok with Vercel deployment",
+  "main": "index.js",
+  "scripts": {
+    "vercel-build": "echo 'No build needed'"
+  },
+  "keywords": [],
+  "author": "Jonas Kodrun",
+  "license": "MIT",
+  "type": "module"
+}
+
+
