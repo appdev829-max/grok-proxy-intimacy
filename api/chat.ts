@@ -1,5 +1,13 @@
-// api/chat.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
+
+interface ChatMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
+
+interface ChatRequest {
+  messages: ChatMessage[];
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -13,9 +21,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: 'Grok API key not configured' });
   }
 
-  console.log('GROK_API_KEY starts with:', GROK_API_KEY.slice(0, 5));
-
   try {
+    const { messages } = req.body as ChatRequest;
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000); // 15s timeout
+
     const response = await fetch('https://api.grok.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -24,9 +35,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
       body: JSON.stringify({
         model: 'grok-1',
-        messages: req.body.messages,
+        messages,
       }),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeout);
 
     if (!response.ok) {
       const errorText = await response.text();
