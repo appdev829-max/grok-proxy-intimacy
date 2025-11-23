@@ -17,6 +17,18 @@ export default async function handler(req: Request): Promise<Response> {
   try {
     const body = await req.json();
 
+    // --- Echo fallback for quick testing ---
+    if (!body.messages) {
+      return new Response(JSON.stringify({ echo: body }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // --- Grok API call with timeout ---
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
     const grokResponse = await fetch('https://api.grok.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -27,7 +39,10 @@ export default async function handler(req: Request): Promise<Response> {
         model: 'grok-1',
         messages: body.messages,
       }),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeout);
 
     if (!grokResponse.ok) {
       const errorText = await grokResponse.text();
