@@ -1,3 +1,5 @@
+console.log("GROK_API_KEY:", process.env.GROK_API_KEY ? "present" : "missing");
+
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
